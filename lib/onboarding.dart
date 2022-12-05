@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:tolesson/const/appText.dart';
-import 'package:tolesson/threePage.dart';
+import 'package:tolesson/userInfo.dart';
 
 class OnBoardingPage extends StatelessWidget {
   const OnBoardingPage({super.key});
@@ -66,5 +66,5 @@ class OnBoardingPage extends StatelessWidget {
       );
 
   void goToHome(context) => Navigator.of(context)
-      .pushReplacement(MaterialPageRoute(builder: (_) => const ThreePage()));
+      .pushReplacement(MaterialPageRoute(builder: (_) => const UserInfo()));
 }

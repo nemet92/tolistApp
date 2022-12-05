@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tolesson/modelPost.dart';
+import 'package:tolesson/PostTaskModal.dart';
 import 'package:tolesson/network.dart';
 
 // ignore: must_be_immutable
@@ -12,30 +12,36 @@ class Homepage extends StatefulWidget {
   State<Homepage> createState() => _HomepageState();
 }
 
-TextEditingController _nameTextEditingController = TextEditingController();
+TextEditingController _taskEditingController = TextEditingController();
 
-class _HomepageState extends State<Homepage> {
-  ProjectService projectService = GeneralService();
+class _HomepageState extends ProjectLoading<Homepage> {
+  List? items;
+  late final ProjectService projectService;
+  @override
+  void initState() {
+    super.initState();
+    projectService = GeneralService();
+    taskListCard();
 
+    // WidgetsBinding.instance
+    //     .addPostFrameCallback((_) => _refreshIndicator.currentState?.show());
+    super.initState();
+  }
+
+  Future<void> taskListCard() async {
+    changeWaitValue();
+    items = await projectService.taskListCard();
+    changeWaitValue();
+  }
+
+//post metodu aidir
   Future<void> sendItemsToWebservice(Posts toDoPostModel) async {
     projectService.taskPost(toDoPostModel);
     return;
   }
 
-  List<Posts>? items;
-  @override
-  void initState() {
-    super.initState();
-    projectService = GeneralService();
-    fetchItemFromMyApi();
-  }
-
-  Future<void> fetchItemFromMyApi() async {
-    // changeWaitValue();
-    // items = await projectService.fetchFromApiWithData();
-    // changeWaitValue();
-  }
-
+  final GlobalKey<RefreshIndicatorState> _refreshIndicator =
+      GlobalKey<RefreshIndicatorState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,23 +49,44 @@ class _HomepageState extends State<Homepage> {
           centerTitle: true,
           title: Text(widget.text),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: Colors.black12,
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.red,
+        body: RefreshIndicator(
+          onRefresh: taskListCard,
+          key: _refreshIndicator,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  width: double.infinity,
+                  color: Colors.black12,
+                  child: Center(
+                      child: ListView.builder(itemBuilder: ((context, index) {
+                    return Text(items?[index].id.toString() ?? "Error");
+                  }))),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                flex: 2,
+                child: isWait
+                    ? Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: items?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          return Card(
+                              child: ListTile(
+                            title: Text(
+                              items?[index].tasks ?? "Error",
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                          ));
+                        }),
+              ),
+            ],
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -81,7 +108,7 @@ class _HomepageState extends State<Homepage> {
                   value = value;
                 });
               },
-              controller: _nameTextEditingController,
+              controller: _taskEditingController,
               decoration: const InputDecoration(
                   hintText: "Task Flutter update version"),
             ),
@@ -91,12 +118,21 @@ class _HomepageState extends State<Homepage> {
                     Navigator.of(context).pop();
 
                     final toDoPostModel =
-                        Posts(tasks: _nameTextEditingController.text);
+                        Posts(tasks: _taskEditingController.text);
                     sendItemsToWebservice(toDoPostModel);
                   },
                   child: const Text("Ok"))
             ],
           );
         });
+  }
+}
+
+abstract class ProjectLoading<T extends StatefulWidget> extends State<T> {
+  bool isWait = false;
+  void changeWaitValue() {
+    setState(() {
+      isWait = !isWait;
+    });
   }
 }

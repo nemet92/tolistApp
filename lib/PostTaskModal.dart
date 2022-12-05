@@ -24,27 +24,22 @@ class ToDoPostModel {
 class Posts {
   int? id;
   String? tasks;
-  String? name;
-  String? mail;
-  int? age;
 
-  Posts({this.id, this.tasks, this.name, this.mail, this.age});
+  Posts({
+    this.id,
+    this.tasks,
+  });
 
   Posts.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     tasks = json['tasks'];
-    name = json['name'];
-    mail = json['mail'];
-    age = json['age'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['tasks'] = tasks;
-    data['name'] = name;
-    data['mail'] = mail;
-    data['age'] = age;
+
     return data;
   }
 }

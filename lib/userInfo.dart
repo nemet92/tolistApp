@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:tolesson/AppText.dart';
+import 'package:tolesson/appPath.dart';
 import 'package:tolesson/homePage.dart';
-import 'package:tolesson/modelPost.dart';
 import 'package:tolesson/network.dart';
+import 'package:tolesson/PostUserModel.dart';
 import 'package:tolesson/widget/customElevatedButton.dart';
 
 import 'widget/customTextFiled.dart';
 
-class ThreePage extends StatefulWidget {
-  const ThreePage({super.key});
+class UserInfo extends StatefulWidget {
+  const UserInfo({super.key});
 
   @override
-  State<ThreePage> createState() => _ThreePageState();
+  State<UserInfo> createState() => _UserInfoState();
 }
 
-class _ThreePageState extends State<ThreePage> with AppPath {
+class _UserInfoState extends State<UserInfo> with AppPath {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _mailTextEditingController =
       TextEditingController();
@@ -24,7 +24,7 @@ class _ThreePageState extends State<ThreePage> with AppPath {
 
   ProjectService projectService = GeneralService();
 
-  Future<void> sendItemsToWebservice(Posts toDoPostModel) async {
+  Future<void> sendItemsToWebservice(Users toDoPostModel) async {
     projectService.infoPage(toDoPostModel);
     return;
   }
@@ -71,7 +71,7 @@ class _ThreePageState extends State<ThreePage> with AppPath {
                     CustomElevatedButton(
                       onPressed: () {
                         setState(() {
-                          final toDoPostModel = Posts(
+                          final toDoPostModel = Users(
                               name: _nameController.text,
                               age: int.tryParse(
                                 _ageTextEditingController.text,

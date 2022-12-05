@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:tolesson/modelPost.dart';
+import 'package:tolesson/PostTaskModal.dart';
+import 'package:tolesson/PostUserModel.dart';
 
 abstract class ProjectService {
   Future<void> taskPost(Posts toDoPostModel);
-  Future<void> infoPage(Posts toDoPostModel);
-  Future<List?> fetchFromApiWithData();
+  Future<void> infoPage(Users toDoPostModel);
+
+  Future<List?> taskListCard();
 }
 
 class GeneralService extends ProjectService {
@@ -23,7 +25,7 @@ class GeneralService extends ProjectService {
   }
 
   @override
-  Future<void> infoPage(Posts toDoPostModel) async {
+  Future<void> infoPage(Users toDoPostModel) async {
     try {
       final response = await dio.post('users', data: toDoPostModel);
       if (response.statusCode == 201) {
@@ -35,13 +37,14 @@ class GeneralService extends ProjectService {
   }
 
   @override
-  Future<List?> fetchFromApiWithData() async {
-    final response = await dio.get('users');
+  Future<List?> taskListCard() async {
+    final response = await dio.get('posts');
     if (response.statusCode == 200) {
-      final value = Posts.fromJson(response.data);
-      return null;
+      final data = response.data;
+      if (data is List) {
+        return data.map((e) => Posts.fromJson(e)).toList();
+      }
     }
-
     return null;
   }
 }
