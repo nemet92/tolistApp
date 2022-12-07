@@ -16,8 +16,8 @@ class Homepage extends StatefulWidget {
 
 TextEditingController _taskEditingController = TextEditingController();
 
-class _HomepageState extends ProjectLoading<Homepage> with AppText {
-  List<GetModel>? items;
+class _HomepageState extends ProjectLoading<Homepage> with AppText, AppIcon {
+  List<GetRequestModel>? items;
   // List<GetModel>? itens;
   late final ProjectService projectService;
   @override
@@ -49,46 +49,63 @@ class _HomepageState extends ProjectLoading<Homepage> with AppText {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(widget.text),
-        ),
+        backgroundColor: Colors.grey[300],
+        drawer: const Drawer(),
+        appBar: _buildAppBar(),
         body: RefreshIndicator(
           onRefresh: taskListCard,
           key: _refreshIndicator,
-          child: Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Container(
-                    width: double.infinity,
-                    color: Colors.black12,
-                    child: Center(
-                      child: Text(
-                        items?.length.toString() ?? "0",
-                        style: const TextStyle(color: Colors.red, fontSize: 20),
-                      ),
-                    )),
-              ),
-              Expanded(
-                flex: 2,
-                child: isWait
-                    ? Container(
-                        decoration: const BoxDecoration(),
-                      )
-                    : ListView.builder(
-                        itemCount: items?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          return Card(
-                              child: ListTile(
-                            title: Text(
-                              items?[index].tasks ?? "Error",
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          ));
-                        }),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            child: Column(
+              children: [
+                const searcBox(),
+                sizedBox(),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                      width: double.infinity,
+                      color: Colors.black12,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          const Text("Sizin qeydlerinizin sayi"),
+                          Text(
+                            items?.length.toString() ?? "0",
+                            style: const TextStyle(
+                                color: Colors.red, fontSize: 20),
+                          ),
+                        ],
+                      )),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: isWait
+                      ? Container(
+                          decoration: const BoxDecoration(),
+                        )
+                      : ListView.builder(
+                          itemCount: items?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            return Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: ListTile(
+                                  leading: const Icon(Icons.check_box),
+                                  trailing: IconButton(
+                                    icon: const Icon(Icons.delete),
+                                    onPressed: () {},
+                                  ),
+                                  title: Text(
+                                    items?[index].tasks ?? "Error",
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                ));
+                          }),
+                ),
+              ],
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -97,6 +114,23 @@ class _HomepageState extends ProjectLoading<Homepage> with AppText {
           },
           child: const Icon(Icons.add),
         ));
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      elevation: 0,
+      centerTitle: true,
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text("Welcome"),
+          const Text(" "),
+          Text(widget.text),
+        ],
+      ),
+    );
   }
 
   Future<void> _displayTextInputDialog(BuildContext context) async {
@@ -129,11 +163,40 @@ class _HomepageState extends ProjectLoading<Homepage> with AppText {
   }
 }
 
+class searcBox extends StatelessWidget {
+  const searcBox({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white70,
+      ),
+      child: const TextField(
+        decoration: InputDecoration(
+            prefixIcon: Icon(Icons.search),
+            prefixIconConstraints: BoxConstraints(maxHeight: 20, minWidth: 24),
+            border: InputBorder.none,
+            hintText: "Search"),
+      ),
+    );
+  }
+}
+
 abstract class ProjectLoading<T extends StatefulWidget> extends State<T> {
   bool isWait = false;
   void changeWaitValue() {
     setState(() {
       isWait = !isWait;
     });
+  }
+
+  SizedBox sizedBox() {
+    return const SizedBox(
+      height: 20,
+    );
   }
 }

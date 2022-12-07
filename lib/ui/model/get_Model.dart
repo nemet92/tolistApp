@@ -1,15 +1,18 @@
-class GetModel {
+class GetRequestModel {
   int? id;
   String? tasks;
   String? key;
-  GetModel({
+  bool? isDone;
+  GetRequestModel({
     this.id,
     this.tasks,
+    this.isDone,
   });
 
-  GetModel.fromJson(Map<String, dynamic> json) {
+  GetRequestModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     tasks = json['tasks'];
+    isDone = json['isDone'];
     // key = json['key'];
   }
 
@@ -17,16 +20,17 @@ class GetModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['tasks'] = tasks;
+    data['isDone'] = isDone;
     return data;
   }
 }
 
 class TaskList {
-  List<GetModel> tasks = [];
+  List<GetRequestModel> tasks = [];
 
   TaskList.fromJsonList(Map value) {
     value.forEach((key, value) {
-      var task = GetModel.fromJson(value);
+      var task = GetRequestModel.fromJson(value);
       task.key = key;
       tasks.add(task);
     });

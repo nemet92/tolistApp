@@ -5,7 +5,7 @@ import 'package:tolesson/ui/service/service.dart';
 import 'package:tolesson/ui/model/post_user_model.dart';
 import 'package:tolesson/ui/shared/widget/custom_elevated_button.dart';
 
-import '../shared/widget/customTextFiled.dart';
+import '../shared/widget/custom_textFiled.dart';
 
 class UserInfo extends StatefulWidget {
   const UserInfo({super.key});
@@ -15,17 +15,28 @@ class UserInfo extends StatefulWidget {
 }
 
 class _UserInfoState extends State<UserInfo> with AppText, AppColor, AppIcon {
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nameEditingController = TextEditingController();
   final TextEditingController _mailTextEditingController =
       TextEditingController();
   final TextEditingController _ageTextEditingController =
       TextEditingController();
+  bool _validateName = false;
+  bool _validateMail = false;
+  bool _validateAge = false;
+  @override
+  void dispose() {
+    _nameEditingController.dispose();
+    _mailTextEditingController.dispose();
+    _ageTextEditingController.dispose();
+    super.dispose();
+  }
+
   String name = " ";
 
   ProjectService projectService = GeneralService();
 
   Future<void> sendItemsToWebservice(Users toDoPostModel) async {
-    projectService.infoPage(toDoPostModel);
+    projectService.signIn(toDoPostModel);
     return;
   }
 
@@ -34,7 +45,8 @@ class _UserInfoState extends State<UserInfo> with AppText, AppColor, AppIcon {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Istifadeci Melumatlari"),
+          centerTitle: true,
+          title: const Text("Accaunt information"),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
@@ -50,17 +62,24 @@ class _UserInfoState extends State<UserInfo> with AppText, AppColor, AppIcon {
                     children: [
                       Center(
                         child: CustomTextFiled(
+                          errorText: errorText,
                           hintText: nameHintText,
-                          controller: _nameController,
+                          controller: _nameEditingController,
+                          validate: _validateName,
                         ),
                       ),
                       sizedBox(),
                       CustomTextFiled(
+                        errorText: errorText,
+                        validate: _validateMail,
                         hintText: mailHintText,
                         controller: _mailTextEditingController,
                       ),
                       sizedBox(),
                       CustomTextFiled(
+                        keypoardType: TextInputType.number,
+                        errorText: errorText,
+                        validate: _validateAge,
                         hintText: ageHintText,
                         controller: _ageTextEditingController,
                       ),
@@ -74,19 +93,33 @@ class _UserInfoState extends State<UserInfo> with AppText, AppColor, AppIcon {
                     CustomElevatedButton(
                       onPressed: () {
                         setState(() {
-                          final toDoPostModel = Users(
-                              name: _nameController.text,
-                              age: int.tryParse(
-                                _ageTextEditingController.text,
-                              ),
-                              email: _mailTextEditingController.text);
-                          sendItemsToWebservice(toDoPostModel);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => Homepage(
-                                        text: _nameController.text,
-                                      ))));
+                          _nameEditingController.text.isEmpty
+                              ? _validateName = true
+                              : _validateName = false;
+                          _mailTextEditingController.text.isEmpty
+                              ? _validateMail = true
+                              : _validateMail = false;
+                          _ageTextEditingController.text.isEmpty
+                              ? _validateAge = true
+                              : _validateAge = false;
+
+                          if (_validateName == false &&
+                              _validateMail == false &&
+                              _validateAge == false) {
+                            final toDoPostModel = Users(
+                                name: _nameEditingController.text,
+                                age: int.tryParse(
+                                  _ageTextEditingController.text,
+                                ),
+                                email: _mailTextEditingController.text);
+                            sendItemsToWebservice(toDoPostModel);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => Homepage(
+                                          text: _nameEditingController.text,
+                                        ))));
+                          }
                         });
                       },
                       icon: iconNext,
