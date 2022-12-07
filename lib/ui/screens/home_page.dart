@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tolesson/const/general_path.dart';
 import 'package:tolesson/ui/model/get_Model.dart';
 import 'package:tolesson/ui/model/post_modal.dart';
 import 'package:tolesson/ui/service/service.dart';
@@ -15,7 +16,7 @@ class Homepage extends StatefulWidget {
 
 TextEditingController _taskEditingController = TextEditingController();
 
-class _HomepageState extends ProjectLoading<Homepage> {
+class _HomepageState extends ProjectLoading<Homepage> with AppText {
   List<GetModel>? items;
   // List<GetModel>? itens;
   late final ProjectService projectService;
@@ -73,9 +74,7 @@ class _HomepageState extends ProjectLoading<Homepage> {
                 flex: 2,
                 child: isWait
                     ? Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                        ),
+                        decoration: const BoxDecoration(),
                       )
                     : ListView.builder(
                         itemCount: items?.length ?? 0,
@@ -105,7 +104,7 @@ class _HomepageState extends ProjectLoading<Homepage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Task add'),
+            title: Center(child: Text(alertDialogText)),
             content: TextField(
               onChanged: (value) {
                 setState(() {
@@ -113,19 +112,17 @@ class _HomepageState extends ProjectLoading<Homepage> {
                 });
               },
               controller: _taskEditingController,
-              decoration: const InputDecoration(
-                  hintText: "Task Flutter update version"),
+              decoration: InputDecoration(hintText: alertTextFiled),
             ),
             actions: <Widget>[
               ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
-
                     final toDoPostModel =
                         Posts(tasks: _taskEditingController.text);
+                    Navigator.of(context).pop();
                     sendItemsToWebservice(toDoPostModel);
                   },
-                  child: const Text("Ok"))
+                  child: const Text("Add"))
             ],
           );
         });

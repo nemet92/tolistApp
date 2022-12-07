@@ -10,7 +10,8 @@ class OnBoardingPage extends StatefulWidget {
   State<OnBoardingPage> createState() => _OnBoardingPageState();
 }
 
-class _OnBoardingPageState extends State<OnBoardingPage> with AppText {
+class _OnBoardingPageState extends State<OnBoardingPage>
+    with AppText, AppImage {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: IntroductionScreen(
@@ -28,12 +29,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> with AppText {
                 body: pageOneText,
                 image: Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 60),
-                    child: Image.asset(
-                      "assets/image1.jpeg",
-                      // scale: 1,
-                    ),
-                  ),
+                      padding: const EdgeInsets.only(top: 60), child: image1),
                 )
                 // image: buildImage("assets/image1.jpeg")
                 ),
@@ -43,9 +39,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> with AppText {
                 image: Center(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 60),
-                    child: Image.asset(
-                      "assets/image2.jpeg",
-                    ),
+                    child: image2,
                   ),
                 )
                 // footer: ElevatedButton(

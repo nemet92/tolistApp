@@ -5,7 +5,8 @@ mixin AppText {
   String ageHintText = "Age";
   String mailHintText = "Mail";
   String buttonTextNext = "Next";
-
+  String alertDialogText = "Task add";
+  String alertTextFiled = "New task add";
   String pageOneText =
       "To Do appilcation welcome! Lores ipsum Lores ipsum Lores ipsum Lores ipsum Lores ipsum Lores ipsum Lores ipsum Lores ipsum Lores ipsum ";
 
@@ -21,4 +22,9 @@ mixin AppColor {
 // Apilcation Icons
 mixin AppIcon {
   IconData iconNext = Icons.skip_next_rounded;
+}
+
+mixin AppImage {
+  Image image1 = Image.asset("assets/image1.jpeg");
+  Image image2 = Image.asset("assets/image2.jpeg");
 }

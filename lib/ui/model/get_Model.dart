@@ -2,17 +2,21 @@ class GetModel {
   int? id;
   String? tasks;
   String? key;
-  GetModel({this.id, this.tasks});
+  GetModel({
+    this.id,
+    this.tasks,
+  });
 
   GetModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    tasks = json['task'];
+    tasks = json['tasks'];
+    // key = json['key'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['task'] = tasks;
+    data['tasks'] = tasks;
     return data;
   }
 }
