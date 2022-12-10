@@ -6,6 +6,7 @@ import 'package:tolesson/ui/model/post_user_model.dart';
 abstract class ProjectService {
   Future<List<Posts>?> taskPost(Posts toDoPostModel);
   Future<void> signIn(Users userModel);
+  bool? removeItemFromLocalHost(String key);
 
   Future<List<GetRequestModel>?> taskListCard();
 }
@@ -49,6 +50,14 @@ class GeneralService extends ProjectService {
         return taskList.tasks;
       }
     }
+    return null;
+  }
+
+  @override
+  bool? removeItemFromLocalHost(String key) {
+    final response = dio.delete(
+      'nTasks/$key.json',
+    );
     return null;
   }
 }

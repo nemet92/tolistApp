@@ -11,13 +11,13 @@ class OnBoardingPage extends StatefulWidget {
 }
 
 class _OnBoardingPageState extends State<OnBoardingPage>
-    with AppText, AppImage {
+    with AppText, AppImage, AppSize, AppIcon {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: IntroductionScreen(
           skipOrBackFlex: 0,
           nextFlex: 0,
-          next: const Icon(Icons.arrow_forward),
+          next: arrowForward,
           showSkipButton: true, dotsDecorator: getPageDecoration(),
           skip: const Text(
             "Skip",
@@ -28,17 +28,14 @@ class _OnBoardingPageState extends State<OnBoardingPage>
                 title: "Hi!",
                 body: pageOneText,
                 image: Center(
-                  child: Padding(
-                      padding: const EdgeInsets.only(top: 60), child: image1),
-                )
-                // image: buildImage("assets/image1.jpeg")
-                ),
+                  child: Padding(padding: imagePadding, child: image1),
+                )),
             PageViewModel(
                 title: "Lores Ipsum",
                 body: pageTwoText,
                 image: Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 60),
+                    padding: imagePadding,
                     child: image2,
                   ),
                 )
@@ -51,7 +48,7 @@ class _OnBoardingPageState extends State<OnBoardingPage>
                 // ),
                 ),
           ],
-          done: const Icon(Icons.arrow_forward),
+          done: arrowForward,
           // onDone: () => goToHome(context),
           onDone: () {
             goToHome(context);

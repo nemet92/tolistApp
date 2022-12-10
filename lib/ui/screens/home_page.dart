@@ -16,7 +16,8 @@ class Homepage extends StatefulWidget {
 
 TextEditingController _taskEditingController = TextEditingController();
 
-class _HomepageState extends ProjectLoading<Homepage> with AppText, AppIcon {
+class _HomepageState extends ProjectLoading<Homepage>
+    with AppText, AppIcon, AppSize {
   List<GetRequestModel>? items;
   // List<GetModel>? itens;
   late final ProjectService projectService;
@@ -44,6 +45,11 @@ class _HomepageState extends ProjectLoading<Homepage> with AppText, AppIcon {
     return;
   }
 
+//delete
+  Future<void> deleteItemFromApi(String key) async {
+    projectService.removeItemFromLocalHost(key);
+  }
+
   final GlobalKey<RefreshIndicatorState> _refreshIndicator =
       GlobalKey<RefreshIndicatorState>();
   @override
@@ -56,11 +62,11 @@ class _HomepageState extends ProjectLoading<Homepage> with AppText, AppIcon {
           onRefresh: taskListCard,
           key: _refreshIndicator,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            padding: columnPadding,
             child: Column(
               children: [
-                const searcBox(),
-                sizedBox(),
+                const SearcBox(),
+                sizedBox,
                 Expanded(
                   flex: 1,
                   child: Container(
@@ -70,7 +76,8 @@ class _HomepageState extends ProjectLoading<Homepage> with AppText, AppIcon {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          const Text("Sizin qeydlerinizin sayi"),
+                          Text(taskNumber),
+                          const Text("data"),
                           Text(
                             items?.length.toString() ?? "0",
                             style: const TextStyle(
@@ -86,20 +93,37 @@ class _HomepageState extends ProjectLoading<Homepage> with AppText, AppIcon {
                           decoration: const BoxDecoration(),
                         )
                       : ListView.builder(
+                          physics: const BouncingScrollPhysics(),
                           itemCount: items?.length ?? 0,
                           itemBuilder: (context, index) {
                             return Card(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 child: ListTile(
-                                  leading: const Icon(Icons.check_box),
+                                  leading: Checkbox(
+                                      value: items?[index].isDone,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          items?[index].isDone = value;
+                                        });
+                                      }),
                                   trailing: IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () {},
+                                    icon: deleteIcon,
+                                    onPressed: () {
+                                      setState(() {
+                                        deleteItemFromApi(
+                                            items?[index].key ?? "");
+                                      });
+                                    },
                                   ),
                                   title: Text(
                                     items?[index].tasks ?? "Error",
-                                    style: const TextStyle(color: Colors.black),
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        decoration:
+                                            (items?[index].isDone ?? true)
+                                                ? TextDecoration.lineThrough
+                                                : TextDecoration.none),
                                   ),
                                 ));
                           }),
@@ -151,10 +175,11 @@ class _HomepageState extends ProjectLoading<Homepage> with AppText, AppIcon {
             actions: <Widget>[
               ElevatedButton(
                   onPressed: () {
-                    final toDoPostModel =
-                        Posts(tasks: _taskEditingController.text);
-                    Navigator.of(context).pop();
+                    final toDoPostModel = Posts(
+                        tasks: _taskEditingController.text, isDone: false);
                     sendItemsToWebservice(toDoPostModel);
+
+                    Navigator.of(context).pop();
                   },
                   child: const Text("Add"))
             ],
@@ -163,8 +188,8 @@ class _HomepageState extends ProjectLoading<Homepage> with AppText, AppIcon {
   }
 }
 
-class searcBox extends StatelessWidget {
-  const searcBox({
+class SearcBox extends StatelessWidget {
+  const SearcBox({
     Key? key,
   }) : super(key: key);
 
@@ -192,11 +217,5 @@ abstract class ProjectLoading<T extends StatefulWidget> extends State<T> {
     setState(() {
       isWait = !isWait;
     });
-  }
-
-  SizedBox sizedBox() {
-    return const SizedBox(
-      height: 20,
-    );
   }
 }

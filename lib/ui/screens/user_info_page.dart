@@ -14,7 +14,8 @@ class UserInfo extends StatefulWidget {
   State<UserInfo> createState() => _UserInfoState();
 }
 
-class _UserInfoState extends State<UserInfo> with AppText, AppColor, AppIcon {
+class _UserInfoState extends State<UserInfo>
+    with AppText, AppColor, AppIcon, AppSize {
   final TextEditingController _nameEditingController = TextEditingController();
   final TextEditingController _mailTextEditingController =
       TextEditingController();
@@ -49,11 +50,11 @@ class _UserInfoState extends State<UserInfo> with AppText, AppColor, AppIcon {
           title: const Text("Accaunt information"),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          padding: columnPadding,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                sizedBox(),
+                sizedBox,
                 Container(
                   padding: const EdgeInsets.all(16),
                   color: containerColor,
@@ -68,14 +69,14 @@ class _UserInfoState extends State<UserInfo> with AppText, AppColor, AppIcon {
                           validate: _validateName,
                         ),
                       ),
-                      sizedBox(),
+                      sizedBox,
                       CustomTextFiled(
                         errorText: errorText,
                         validate: _validateMail,
                         hintText: mailHintText,
                         controller: _mailTextEditingController,
                       ),
-                      sizedBox(),
+                      sizedBox,
                       CustomTextFiled(
                         keypoardType: TextInputType.number,
                         errorText: errorText,
@@ -86,7 +87,7 @@ class _UserInfoState extends State<UserInfo> with AppText, AppColor, AppIcon {
                     ],
                   ),
                 ),
-                sizedBox(),
+                sizedBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -132,12 +133,6 @@ class _UserInfoState extends State<UserInfo> with AppText, AppColor, AppIcon {
           ),
         ),
       ),
-    );
-  }
-
-  SizedBox sizedBox() {
-    return const SizedBox(
-      height: 20,
     );
   }
 }
