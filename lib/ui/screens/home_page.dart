@@ -19,7 +19,6 @@ TextEditingController _taskEditingController = TextEditingController();
 class _HomepageState extends ProjectLoading<Homepage>
     with AppText, AppIcon, AppSize {
   List<GetRequestModel>? items;
-  // List<GetModel>? itens;
   late final ProjectService projectService;
   @override
   void initState() {
@@ -34,13 +33,12 @@ class _HomepageState extends ProjectLoading<Homepage>
 
   Future<void> taskListCard() async {
     changeWaitValue();
-    // itens = await projectService.taskListCard();
     items = await projectService.taskListCard();
     changeWaitValue();
   }
 
-//post metodu aidir
-  Future<void> sendItemsToWebservice(Posts toDoPostModel) async {
+//post method
+  Future<void> sendItemsToWebService(Posts toDoPostModel) async {
     projectService.taskPost(toDoPostModel);
     return;
   }
@@ -65,7 +63,7 @@ class _HomepageState extends ProjectLoading<Homepage>
             padding: columnPadding,
             child: Column(
               children: [
-                const SearcBox(),
+                const SearchBox(),
                 sizedBox,
                 Expanded(
                   flex: 1,
@@ -100,13 +98,26 @@ class _HomepageState extends ProjectLoading<Homepage>
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 child: ListTile(
-                                  leading: Checkbox(
-                                      value: items?[index].isDone,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          items?[index].isDone = value;
-                                        });
-                                      }),
+                                  leading: Container(
+                                      height: 24,
+                                      width: 24,
+                                      decoration: const BoxDecoration(
+                                          color: Colors.red,
+                                          shape: BoxShape.circle),
+                                      child: items?[index].isDone ?? true
+                                          ? const Icon(
+                                              Icons.check,
+                                              color: Colors.white,
+                                            )
+                                          : Container()),
+
+                                  //  Checkbox(
+                                  //     value: items?[index].isDone,
+                                  //     onChanged: (value) {
+                                  //       setState(() {
+                                  //         items?[index].isDone = value;
+                                  //       });
+                                  //     }),
                                   trailing: IconButton(
                                     icon: deleteIcon,
                                     onPressed: () {
@@ -177,7 +188,7 @@ class _HomepageState extends ProjectLoading<Homepage>
                   onPressed: () {
                     final toDoPostModel = Posts(
                         tasks: _taskEditingController.text, isDone: false);
-                    sendItemsToWebservice(toDoPostModel);
+                    sendItemsToWebService(toDoPostModel);
 
                     Navigator.of(context).pop();
                   },
@@ -188,8 +199,8 @@ class _HomepageState extends ProjectLoading<Homepage>
   }
 }
 
-class SearcBox extends StatelessWidget {
-  const SearcBox({
+class SearchBox extends StatelessWidget {
+  const SearchBox({
     Key? key,
   }) : super(key: key);
 
