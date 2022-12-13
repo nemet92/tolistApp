@@ -75,7 +75,6 @@ class _HomepageState extends ProjectLoading<Homepage>
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(taskNumber),
-                          const Text("data"),
                           Text(
                             items?.length.toString() ?? "0",
                             style: const TextStyle(
@@ -97,44 +96,51 @@ class _HomepageState extends ProjectLoading<Homepage>
                             return Card(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
-                                child: ListTile(
-                                  leading: Container(
-                                      height: 24,
-                                      width: 24,
-                                      decoration: const BoxDecoration(
-                                          color: Colors.red,
-                                          shape: BoxShape.circle),
-                                      child: items?[index].isDone ?? true
-                                          ? const Icon(
-                                              Icons.check,
-                                              color: Colors.white,
-                                            )
-                                          : Container()),
+                                child: Dismissible(
+                                  onDismissed: (direction) {
+                                    deleteItemFromApi(items?[index].key ?? " ");
+                                  },
+                                  key: Key(items.toString()),
+                                  child: ListTile(
+                                    leading:
+                                        // Container(
+                                        //     height: 24,
+                                        //     width: 24,
+                                        //     decoration: const BoxDecoration(
+                                        //         color: Colors.red,
+                                        //         shape: BoxShape.circle),
+                                        //     child: items?[index].isDone ?? true
+                                        //         ? const Icon(
+                                        //             Icons.check,
+                                        //             color: Colors.white,
+                                        //           )
+                                        //         : Container()),
 
-                                  //  Checkbox(
-                                  //     value: items?[index].isDone,
-                                  //     onChanged: (value) {
-                                  //       setState(() {
-                                  //         items?[index].isDone = value;
-                                  //       });
-                                  //     }),
-                                  trailing: IconButton(
-                                    icon: deleteIcon,
-                                    onPressed: () {
-                                      setState(() {
-                                        deleteItemFromApi(
-                                            items?[index].key ?? "");
-                                      });
-                                    },
-                                  ),
-                                  title: Text(
-                                    items?[index].tasks ?? "Error",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        decoration:
-                                            (items?[index].isDone ?? true)
-                                                ? TextDecoration.lineThrough
-                                                : TextDecoration.none),
+                                        Checkbox(
+                                            value: items?[index].isDone,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                items?[index].isDone = value;
+                                              });
+                                            }),
+                                    trailing: IconButton(
+                                      icon: deleteIcon,
+                                      onPressed: () {
+                                        setState(() {
+                                          deleteItemFromApi(
+                                              items?[index].key ?? "");
+                                        });
+                                      },
+                                    ),
+                                    title: Text(
+                                      items?[index].tasks ?? "Error",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          decoration:
+                                              (items?[index].isDone ?? true)
+                                                  ? TextDecoration.lineThrough
+                                                  : TextDecoration.none),
+                                    ),
                                   ),
                                 ));
                           }),
