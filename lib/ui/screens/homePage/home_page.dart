@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tolesson/const/general_path.dart';
 import 'package:tolesson/ui/model/get_Model.dart';
 import 'package:tolesson/ui/model/post_modal.dart';
+import 'package:tolesson/ui/screens/homePage/searcbox.dart';
 import 'package:tolesson/ui/service/service.dart';
 
 // ignore: must_be_immutable
@@ -25,6 +27,7 @@ class _HomepageState extends ProjectLoading<Homepage>
     super.initState();
     projectService = GeneralService();
     taskListCard();
+    loadSwitchValue();
 
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _refreshIndicator.currentState?.show());
@@ -46,6 +49,21 @@ class _HomepageState extends ProjectLoading<Homepage>
 //delete
   Future<void> deleteItemFromApi(String key) async {
     projectService.removeItemFromLocalHost(key);
+  }
+
+  loadSwitchValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _checkboxValue = (prefs.getBool("isTrue")) ?? false;
+    });
+  }
+
+  bool? _checkboxValue = false;
+  saveswitchValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setBool("isTrue", _checkboxValue ?? false);
+    });
   }
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicator =
@@ -90,59 +108,57 @@ class _HomepageState extends ProjectLoading<Homepage>
                           decoration: const BoxDecoration(),
                         )
                       : ListView.builder(
-                          physics: const BouncingScrollPhysics(),
+                          // physics: const BouncingScrollPhysics(),
                           itemCount: items?.length ?? 0,
                           itemBuilder: (context, index) {
                             return Card(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Dismissible(
-                                  onDismissed: (direction) {
-                                    deleteItemFromApi(items?[index].key ?? " ");
-                                  },
-                                  key: Key(items.toString()),
-                                  child: ListTile(
-                                    leading:
-                                        // Container(
-                                        //     height: 24,
-                                        //     width: 24,
-                                        //     decoration: const BoxDecoration(
-                                        //         color: Colors.red,
-                                        //         shape: BoxShape.circle),
-                                        //     child: items?[index].isDone ?? true
-                                        //         ? const Icon(
-                                        //             Icons.check,
-                                        //             color: Colors.white,
-                                        //           )
-                                        //         : Container()),
+                                    onDismissed: (direction) {
+                                      deleteItemFromApi(
+                                          items?[index].key ?? " ");
+                                    },
+                                    key: Key(items.toString()),
+                                    child: ListTile(
+                                      leading:
+                                          //  Checkbox(
+                                          //     value: items?[index].isDone,
+                                          //     onChanged: (value) {
+                                          //       debugPrint(value.toString());
 
-                                        Checkbox(
-                                            value: items?[index].isDone,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                items?[index].isDone = value;
-                                              });
-                                            }),
-                                    trailing: IconButton(
-                                      icon: deleteIcon,
-                                      onPressed: () {
-                                        setState(() {
-                                          deleteItemFromApi(
-                                              items?[index].key ?? "");
-                                        });
-                                      },
-                                    ),
-                                    title: Text(
-                                      items?[index].tasks ?? "Error",
-                                      style: TextStyle(
+                                          //       setState(() {
+                                          //         items?[index].isDone = value;
+                                          //       });
+                                          //     }),
+                                          Checkbox(
+                                              value: _checkboxValue,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _checkboxValue = value;
+
+                                                  saveswitchValue();
+                                                });
+                                              }),
+                                      trailing: IconButton(
+                                        icon: deleteIcon,
+                                        onPressed: () {
+                                          setState(() {
+                                            deleteItemFromApi(
+                                                items?[index].key ?? "");
+                                          });
+                                        },
+                                      ),
+                                      title: Text(
+                                        items?[index].tasks ?? "Error",
+                                        style: TextStyle(
                                           color: Colors.black,
-                                          decoration:
-                                              (items?[index].isDone ?? true)
-                                                  ? TextDecoration.lineThrough
-                                                  : TextDecoration.none),
-                                    ),
-                                  ),
-                                ));
+                                          decoration: (_checkboxValue ?? false
+                                              ? TextDecoration.lineThrough
+                                              : TextDecoration.none),
+                                        ),
+                                      ),
+                                    )));
                           }),
                 ),
               ],
@@ -202,29 +218,6 @@ class _HomepageState extends ProjectLoading<Homepage>
             ],
           );
         });
-  }
-}
-
-class SearchBox extends StatelessWidget {
-  const SearchBox({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.white70,
-      ),
-      child: const TextField(
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search),
-            prefixIconConstraints: BoxConstraints(maxHeight: 20, minWidth: 24),
-            border: InputBorder.none,
-            hintText: "Search"),
-      ),
-    );
   }
 }
 

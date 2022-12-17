@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tolesson/const/general_path.dart';
-import 'package:tolesson/ui/screens/home_page.dart';
+import 'package:tolesson/ui/screens/homePage/home_page.dart';
 import 'package:tolesson/ui/service/service.dart';
 import 'package:tolesson/ui/model/post_user_model.dart';
 import 'package:tolesson/ui/shared/widget/custom_elevated_button.dart';

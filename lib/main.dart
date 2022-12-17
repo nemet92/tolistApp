@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tolesson/ui/screens/home_page.dart';
+import 'package:tolesson/ui/screens/homePage/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // home: OnBoardingPage(),
       home: Homepage(text: "toDo"),
+      // home: SharedLearnPage(),
     );
   }
 }
