@@ -71,6 +71,7 @@ class _HomepageState extends ProjectLoading<Homepage>
     });
   }
 
+  List<bool> chekList = [];
   final GlobalKey<RefreshIndicatorState> _refreshIndicator =
       GlobalKey<RefreshIndicatorState>();
   @override
