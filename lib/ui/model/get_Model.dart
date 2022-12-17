@@ -2,17 +2,17 @@ class GetRequestModel {
   int? id;
   String? tasks;
   String? key;
-  bool? isDone;
+  // bool? isDone;
   GetRequestModel({
     this.id,
     this.tasks,
-    this.isDone = false,
+    // this.isDone = false,
   });
 
   GetRequestModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     tasks = json['tasks'];
-    isDone = json['isDone'];
+    // isDone = json['isDone'];
   }
 
   Map<String, dynamic> toJson() {
@@ -20,7 +20,7 @@ class GetRequestModel {
     data['id'] = id;
     data['tasks'] = tasks;
 
-    data['isDone'] = isDone;
+    // data['isDone'] = isDone;
     return data;
   }
 }

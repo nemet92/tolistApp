@@ -53,16 +53,21 @@ class _HomepageState extends ProjectLoading<Homepage>
 
   loadSwitchValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _checkboxValue = (prefs.getBool("isTrue")) ?? false;
-    });
+
+    _checkboxValue = (prefs.getBool("isTrue")) ?? false;
   }
 
-  bool? _checkboxValue = false;
-  saveswitchValue() async {
+  bool _checkboxValue = false;
+
+  saveswitchValue(String number) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setBool("isTrue", _checkboxValue);
+  }
+
+  void changeValue(bool value) {
     setState(() {
-      prefs.setBool("isTrue", _checkboxValue ?? false);
+      _checkboxValue = value;
     });
   }
 
@@ -134,11 +139,14 @@ class _HomepageState extends ProjectLoading<Homepage>
                                           Checkbox(
                                               value: _checkboxValue,
                                               onChanged: (value) {
-                                                setState(() {
-                                                  _checkboxValue = value;
+                                                changeValue(value ?? false);
 
-                                                  saveswitchValue();
-                                                });
+                                                // setState(() {
+                                                //   _checkboxValue = value;
+
+                                                //   saveswitchValue(
+                                                //       items?[index].key ?? " ");
+                                                // });
                                               }),
                                       trailing: IconButton(
                                         icon: deleteIcon,
@@ -153,7 +161,7 @@ class _HomepageState extends ProjectLoading<Homepage>
                                         items?[index].tasks ?? "Error",
                                         style: TextStyle(
                                           color: Colors.black,
-                                          decoration: (_checkboxValue ?? false
+                                          decoration: (_checkboxValue
                                               ? TextDecoration.lineThrough
                                               : TextDecoration.none),
                                         ),
@@ -209,7 +217,9 @@ class _HomepageState extends ProjectLoading<Homepage>
               ElevatedButton(
                   onPressed: () {
                     final toDoPostModel = Posts(
-                        tasks: _taskEditingController.text, isDone: false);
+                      tasks: _taskEditingController.text,
+                      // isDone: false
+                    );
                     sendItemsToWebService(toDoPostModel);
 
                     Navigator.of(context).pop();

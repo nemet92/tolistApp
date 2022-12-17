@@ -24,25 +24,25 @@ class ToDoPostModel {
 class Posts {
   int? id;
   String? tasks;
-  bool? isDone = false;
+  // bool? isDone = false;
 
   Posts({
     this.id,
     this.tasks,
-    this.isDone,
+    // this.isDone,
   });
 
   Posts.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     tasks = json['tasks'];
-    isDone = json['isDone'];
+    // isDone = json['isDone'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['tasks'] = tasks;
-    data['isDone'] = isDone;
+    // data['isDone'] = isDone;
 
     return data;
   }
