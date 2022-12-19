@@ -26,7 +26,7 @@ mixin AppColor {
 // Apilcation Icons
 mixin AppIcon {
   IconData iconNext = Icons.skip_next_rounded;
-  Icon deleteIcon = const Icon(Icons.delete);
+  Icon deleteIcon = const Icon(Icons.edit);
   Icon arrowForward = const Icon(Icons.arrow_forward);
   Icon sunny = const Icon(Icons.sunny);
   Icon dark = const Icon(Icons.dark_mode);

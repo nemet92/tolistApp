@@ -17,6 +17,8 @@ class Homepage extends StatefulWidget {
 }
 
 TextEditingController _taskEditingController = TextEditingController();
+TextEditingController _taskEditingController22 = TextEditingController();
+
 bool _checkboxValue = false;
 bool isData = false;
 List<bool> chekList = [];
@@ -120,68 +122,103 @@ class _HomepageState extends ProjectLoading<Homepage>
                       )),
                 ),
                 Expanded(
-                  flex: 2,
-                  child: isWait
-                      ? Container(
-                          decoration: const BoxDecoration(),
-                        )
-                      : ListView.builder(
-                          // physics: const BouncingScrollPhysics(),
-                          itemCount: items?.length ?? 0,
-                          itemBuilder: (context, index) {
-                            return Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Dismissible(
-                                    onDismissed: (direction) {
-                                      deleteItemFromApi(
-                                          items?[index].key ?? " ");
-                                    },
-                                    key: Key(items.toString()),
-                                    child: ListTile(
-                                      leading:
-                                          //  Checkbox(
-                                          //     value: items?[index].isDone,
-                                          //     onChanged: (value) {
-                                          //       debugPrint(value.toString());
-
-                                          //       setState(() {
-                                          //         items?[index].isDone = value;
-                                          //       });
-                                          //     }),
-                                          Checkbox(
-                                              value: _checkboxValue,
-                                              onChanged: (value) {
-                                                changeValue(value ?? false);
-
-                                                // setState(() {
-                                                //   _checkboxValue = value;
-
-                                                //   saveswitchValue(
-                                                //       items?[index].key ?? " ");
-                                                // });
-                                              }),
-                                      trailing: IconButton(
-                                        icon: deleteIcon,
-                                        onPressed: () {
-                                          setState(() {
+                    flex: 2,
+                    child: (items?.isNotEmpty ?? false)
+                        ? isWait
+                            ? Container(
+                                decoration: const BoxDecoration(),
+                              )
+                            : ListView.builder(
+                                // physics: const BouncingScrollPhysics(),
+                                itemCount: items?.length ?? 0,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Dismissible(
+                                          onDismissed: (direction) {
                                             deleteItemFromApi(
-                                                items?[index].key ?? "");
-                                          });
-                                        },
-                                      ),
-                                      title: Text(
-                                        items?[index].tasks ?? "Error",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          decoration: (_checkboxValue
-                                              ? TextDecoration.lineThrough
-                                              : TextDecoration.none),
-                                        ),
-                                      ),
-                                    )));
-                          }),
-                ),
+                                                items?[index].key ?? " ");
+                                          },
+                                          background: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: const [
+                                              Icon(
+                                                Icons.delete,
+                                                color: Colors.red,
+                                              ),
+                                            ],
+                                          ),
+                                          key: Key(items.toString()),
+                                          child: ListTile(
+                                              leading:
+                                                  //  Checkbox(
+                                                  //     value: items?[index].isDone,
+                                                  //     onChanged: (value) {
+                                                  //       debugPrint(value.toString());
+
+                                                  //       setState(() {
+                                                  //         items?[index].isDone = value;
+                                                  //       });
+                                                  //     }),
+                                                  Checkbox(
+                                                      value: _checkboxValue,
+                                                      onChanged: (value) {
+                                                        changeValue(
+                                                            value ?? false);
+
+                                                        // setState(() {
+                                                        //   _checkboxValue = value;
+
+                                                        //   saveswitchValue(
+                                                        //       items?[index].key ?? " ");
+                                                        // });
+                                                      }),
+                                              // trailing: _checkboxValue
+                                              //     ? const TextField(
+                                              //         decoration:
+                                              //             InputDecoration(),
+                                              //       )
+                                              //     : IconButton(
+                                              //         icon: deleteIcon,
+                                              //         onPressed: () {
+                                              //           setState(() {});
+                                              //         },
+                                              //       ),
+                                              title: _checkboxValue
+                                                  ? Text(
+                                                      items?[index].tasks ??
+                                                          "Error",
+                                                      style: const TextStyle(
+                                                        color: Colors.black,
+                                                        decoration:
+                                                            (TextDecoration
+                                                                .lineThrough),
+                                                      ),
+                                                    )
+                                                  : TextField(
+                                                      controller:
+                                                          _taskEditingController22,
+                                                      onSubmitted: ((value) {
+                                                        final toDoPostModel =
+                                                            Posts(
+                                                          tasks:
+                                                              _taskEditingController22
+                                                                  .text = value,
+                                                        );
+                                                        sendItemsToWebService(
+                                                            toDoPostModel);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      }),
+                                                      decoration:
+                                                          const InputDecoration()))));
+                                })
+                        : const Center(
+                            child: Text("Tapsiriq yoxdur!!"),
+                          )),
               ],
             ),
           ),
