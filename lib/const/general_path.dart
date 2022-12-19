@@ -19,6 +19,8 @@ mixin AppText {
 // Appilcation Colors
 mixin AppColor {
   Color containerColor = const Color(0xffff973f);
+  Color sunnyColor = Colors.lightBlue;
+  Color darkColor = Colors.black;
 }
 
 // Apilcation Icons
@@ -26,7 +28,8 @@ mixin AppIcon {
   IconData iconNext = Icons.skip_next_rounded;
   Icon deleteIcon = const Icon(Icons.delete);
   Icon arrowForward = const Icon(Icons.arrow_forward);
-  // Icon IconDelete = IconButton(icon: const Icon(Icons.delete), onPressed: () {});
+  Icon sunny = const Icon(Icons.sunny);
+  Icon dark = const Icon(Icons.dark_mode);
 }
 
 mixin AppImage {

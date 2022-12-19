@@ -17,9 +17,13 @@ class Homepage extends StatefulWidget {
 }
 
 TextEditingController _taskEditingController = TextEditingController();
+bool _checkboxValue = false;
+bool isData = false;
+List<bool> chekList = [];
+var secilenList = <bool>[];
 
 class _HomepageState extends ProjectLoading<Homepage>
-    with AppText, AppIcon, AppSize {
+    with AppText, AppIcon, AppSize, AppColor {
   List<GetRequestModel>? items;
   late final ProjectService projectService;
   @override
@@ -57,12 +61,15 @@ class _HomepageState extends ProjectLoading<Homepage>
     _checkboxValue = (prefs.getBool("isTrue")) ?? false;
   }
 
-  bool _checkboxValue = false;
-
   saveswitchValue(String number) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.setBool("isTrue", _checkboxValue);
+  }
+
+  Future<void> changeColorValue() async {
+    final prefs = await SharedPreferences.getInstance();
+    changeColor(prefs.getBool("isTrue") ?? false);
   }
 
   void changeValue(bool value) {
@@ -71,7 +78,12 @@ class _HomepageState extends ProjectLoading<Homepage>
     });
   }
 
-  List<bool> chekList = [];
+  void changeColor(bool isRed) {
+    setState(() {
+      isData = isRed;
+    });
+  }
+
   final GlobalKey<RefreshIndicatorState> _refreshIndicator =
       GlobalKey<RefreshIndicatorState>();
   @override
@@ -184,8 +196,18 @@ class _HomepageState extends ProjectLoading<Homepage>
 
   AppBar _buildAppBar() {
     return AppBar(
-      elevation: 0,
-      centerTitle: true,
+      actions: [
+        IconButton(
+            onPressed: () async {
+              setState(() {
+                isData = !isData;
+              });
+              final prefs = await SharedPreferences.getInstance();
+              prefs.setBool("isTrue", isData);
+            },
+            icon: isData == true ? sunny : dark)
+      ],
+      backgroundColor: isData == true ? sunnyColor : darkColor,
       title: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -222,7 +244,6 @@ class _HomepageState extends ProjectLoading<Homepage>
                       // isDone: false
                     );
                     sendItemsToWebService(toDoPostModel);
-
                     Navigator.of(context).pop();
                   },
                   child: const Text("Add"))
