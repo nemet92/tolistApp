@@ -5,7 +5,7 @@ import 'package:tolesson/ui/service/service.dart';
 import 'package:tolesson/ui/model/post_user_model.dart';
 import 'package:tolesson/ui/shared/widget/custom_elevated_button.dart';
 
-import '../shared/widget/custom_filed.dart';
+import '../../yLib/shared/custom_filed.dart';
 
 class UserInfo extends StatefulWidget {
   const UserInfo({super.key});
@@ -40,10 +40,6 @@ class _UserInfoState extends State<UserInfo>
     projectService.signIn(toDoPostModel);
     return;
   }
-
-
-
-  
 
   @override
   Widget build(BuildContext context) {

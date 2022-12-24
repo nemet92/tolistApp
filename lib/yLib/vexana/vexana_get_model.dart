@@ -5,7 +5,7 @@ import 'package:tolesson/ui/model/get_Model.dart';
 import 'package:tolesson/ui/model/post_modal.dart';
 import 'package:tolesson/ui/screens/homePage/searcbox.dart';
 import 'package:tolesson/ui/service/service.dart';
-import 'package:tolesson/vexana/vexana_%20model.dart';
+import 'package:tolesson/yLib/vexana/vexana_%20model.dart';
 import 'package:vexana/vexana.dart';
 
 // ignore: must_be_immutable
@@ -104,9 +104,6 @@ class _HomepageVexanaState extends ProjectLoading<HomepageVexana>
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[300],
-        // drawer: const Drawer(
-        //   child: ListTile(leading: Text(networkManager.),),
-        // ),
         appBar: _buildAppBar(),
         body: RefreshIndicator(
           onRefresh: taskListCard,

@@ -23,8 +23,11 @@ class CustomTextFiled extends StatelessWidget {
       decoration: InputDecoration(
           errorText: validate ? errorText : null,
           hintText: hintText,
-          enabledBorder: const OutlineInputBorder(),
-          disabledBorder: const OutlineInputBorder()),
+          enabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black)),
+          disabledBorder: const OutlineInputBorder(),
+          focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black))),
     );
   }
 }

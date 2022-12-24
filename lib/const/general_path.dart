@@ -10,6 +10,8 @@ mixin AppText {
   String alertTextFiled = "New task add";
   String errorText = "Bu xana bos qala bilmez!";
   String taskNumber = "Sizin qeydlerinizin sayi";
+  String emailErrorText = "Bir email daxil edin";
+  String passwordlErrorText = "Bir sifre daxil edin(mes:1A@!)";
   String pageOneText =
       "To Do appilcation welcome! Lores ipsum Lores ipsum Lores ipsum Lores ipsum Lores ipsum Lores ipsum Lores ipsum Lores ipsum Lores ipsum ";
 
@@ -19,7 +21,7 @@ mixin AppText {
 
 // Appilcation Colors
 mixin AppColor {
-  Color containerColor = const Color(0xffff973f);
+  Color containerColor = Colors.black38;
   Color sunnyColor = Colors.lightBlue;
   Color darkColor = Colors.black;
 }
@@ -43,5 +45,7 @@ mixin AppSize {
   final imagePadding = const EdgeInsets.only(top: 60);
   final sizedBox = const SizedBox(height: 20);
 }
+
+//
 
 enum RoutePages { loginPage, homePage }

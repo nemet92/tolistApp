@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tolesson/const/general_path.dart';
 import 'package:tolesson/ui/shared/widget/custom_elevated_button.dart';
 import 'package:tolesson/ui/shared/widget/global_navigation_mixin.dart';
-import 'package:tolesson/vexana/cutomFiled.dart';
-import 'package:tolesson/vexana/vexana_%20model.dart';
+import 'package:tolesson/yLib/vexana/cutomFiled.dart';
+import 'package:tolesson/yLib/vexana/vexana_%20model.dart';
 import 'package:vexana/vexana.dart';
 import 'package:kartal/kartal.dart';
 
@@ -71,8 +71,11 @@ class _SignPageState extends State<SignPage>
                 children: [
                   sizedBox,
                   Container(
-                    padding: const EdgeInsets.all(16),
-                    color: containerColor,
+                    decoration: BoxDecoration(
+                        color: containerColor,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(24))),
+                    padding: const EdgeInsets.all(24),
                     height: 400,
                     child: Column(
                       children: [
@@ -87,7 +90,7 @@ class _SignPageState extends State<SignPage>
                             controller: _passwordEditingController,
                             validate: (value) => value.isValidPassword
                                 ? null
-                                : "Bir sifre hesabi girin"),
+                                : passwordlErrorText),
                         sizedBox,
                       ],
                     ),
