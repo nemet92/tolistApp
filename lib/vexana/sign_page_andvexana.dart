@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tolesson/const/general_path.dart';
-import 'package:tolesson/ui/screens/homePage/home_page.dart';
 import 'package:tolesson/ui/shared/widget/custom_elevated_button.dart';
+import 'package:tolesson/ui/shared/widget/global_navigation_mixin.dart';
 import 'package:tolesson/vexana/cutomFiled.dart';
 import 'package:tolesson/vexana/vexana_%20model.dart';
 import 'package:vexana/vexana.dart';
@@ -15,7 +15,7 @@ class SignPage extends StatefulWidget {
 }
 
 class _SignPageState extends State<SignPage>
-    with AppText, AppColor, AppIcon, AppSize {
+    with AppText, AppColor, AppIcon, AppSize, GlobalNavigationMixin {
 //vexana
 
   late final INetworkManager networkManeger;
@@ -81,7 +81,7 @@ class _SignPageState extends State<SignPage>
                                 controller: _mailTextEditingController,
                                 validate: (value) => value.isValidEmail
                                     ? null
-                                    : "Bir gmail hesabi girin")),
+                                    : emailErrorText)),
                         sizedBox,
                         CustomUserLoginField(
                             controller: _passwordEditingController,
@@ -103,8 +103,7 @@ class _SignPageState extends State<SignPage>
                                 email: _mailTextEditingController.text,
                                 password: _passwordEditingController.text);
                             sendUserInfo(model);
-
-                            context.navigateToPage(Homepage(text: "vexana"));
+                            goToHomePage(context);
                           }
                         },
                         icon: iconNext,

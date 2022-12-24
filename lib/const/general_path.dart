@@ -43,3 +43,5 @@ mixin AppSize {
   final imagePadding = const EdgeInsets.only(top: 60);
   final sizedBox = const SizedBox(height: 20);
 }
+
+enum RoutePages { loginPage, homePage }
