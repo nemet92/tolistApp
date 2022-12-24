@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tolesson/ui/screens/homePage/home_page.dart';
+import 'package:tolesson/vexana/sign_page_andvexana.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,16 +14,18 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return MaterialApp(
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          elevation: 0,
-          centerTitle: true,
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            elevation: 0,
+            centerTitle: true,
+          ),
         ),
-      ),
-      debugShowCheckedModeBanner: false,
-      // home: OnBoardingPage(),
-      home: Homepage(text: "toDo"),
-      // home: SharedLearnPage(),
-    );
+        debugShowCheckedModeBanner: false,
+        // home: OnBoardingPage(),
+        // home: Homepage(text: "toDo"),
+        // home: SharedLearnPage(),
+        home: const SignPage()
+        // home: const UserInfo(),
+        );
   }
 }

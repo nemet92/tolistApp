@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 mixin AppText {
+  String password = "password";
   String nameHintText = "Name";
   String ageHintText = "Age";
   String mailHintText = "Mail";
